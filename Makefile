@@ -2,11 +2,19 @@
 
 .PHONY: run-backend
 run-backend: ## Run hasura-engine and database with docker-compose
-	-docker-compose up
+	docker-compose up
 
-.PHONY: run-console
-run-console: ## Run hasura console
+.PHONY: run-local-console
+run-local-console: ## Run hasura console in local environment
 	cd hasura && hasura console
+
+.PHONY: run-dev-console
+run-dev-console: ## Run hasura console in development environment on Hasura Cloud
+	cd hasura && hasura console --envfile env/.dev.env
+
+.PHONY: run-prod-console
+run-prod-console: ## Run hasura console in production environment on Hasura Cloud
+	cd hasura && hasura console --envfile env/.prod.env
 
 .PHONY: help
 help: ## Show help
