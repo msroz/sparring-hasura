@@ -1,6 +1,20 @@
-actions: []
+actions:
+- name: hello
+  definition:
+    kind: synchronous
+    handler: http://host.docker.internal:3000/hello
+    forward_client_headers: true
+- name: hi
+  definition:
+    kind: ""
+    handler: http://host.docker.internal:3000/hi
+    forward_client_headers: true
+    headers:
+    - value: dummy
+      name: ACTION_SECRET_DUMMY
 custom_types:
   enums: []
   input_objects: []
-  objects: []
+  objects:
+  - name: World
   scalars: []

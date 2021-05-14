@@ -1,2 +1,20 @@
+type Mutation {
+  hello (
+    message: String!
+  ): World
+}
 
+
+type Query {
+  hi : World
+}
+
+
+
+
+type World {
+  hello : String!
+  userAgent : String!
+  message : String!
+}
 
