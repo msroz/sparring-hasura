@@ -4,9 +4,13 @@
 run-backend: ## Run hasura-engine and database with docker-compose
 	docker-compose up
 
+.PHONY: run-auth
+run-auth: ## Run firebase auth frontend
+	cd auth_app && php -S localhost:9000 -t frontend
+
 .PHONY: run-local-console
 run-local-console: ## Run hasura console in local environment
-	cd hasura && hasura console
+	cd hasura && hasura console --envfile env/.local.env
 
 .PHONY: run-dev-console
 run-dev-console: ## Run hasura console in development environment on Hasura Cloud

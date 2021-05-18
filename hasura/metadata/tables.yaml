@@ -22,6 +22,43 @@
           name: users
         column_mapping:
           user_id: id
+  insert_permissions:
+  - role: user
+    permission:
+      check:
+        user_id:
+          _eq: X-Hasura-User-Id
+      set:
+        user_id: x-hasura-User-Id
+      columns:
+      - is_completed
+      - is_public
+      - title
+      backend_only: false
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - created_at
+      - id
+      - is_completed
+      - is_public
+      - title
+      - user_id
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+  update_permissions:
+  - role: user
+    permission:
+      columns:
+      - is_completed
+      - is_public
+      - title
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      check: null
   event_triggers:
   - name: createTodo
     definition:
