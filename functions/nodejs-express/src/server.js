@@ -52,4 +52,18 @@ app.post('/hello', async (req, res) => {
   });
 });
 
+// Event Triggers
+// https://hasura.io/docs/latest/graphql/core/event-triggers/payload.html
+app.post('/createTodo', async (req, res) => {
+  const ua = req.header('User-Agent') || '-';
+  const payload = req.body;
+  console.log(`id:${payload.id}`);
+  console.log(`createdAt:${payload.created_at}`);
+  console.log(`trigger.name:${payload.trigger.name}`);
+  console.dir(`event:${JSON.stringify(payload.event)}`);
+
+  res.status(204).send();
+});
+
+
 app.listen(PORT);

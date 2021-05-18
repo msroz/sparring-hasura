@@ -2,12 +2,12 @@ actions:
 - name: hello
   definition:
     kind: synchronous
-    handler: http://host.docker.internal:3000/hello
+    handler: '{{ACTION_BASE_URL}}//hello'
     forward_client_headers: true
 - name: hi
   definition:
     kind: ""
-    handler: http://host.docker.internal:3000/hi
+    handler: '{{ACTION_BASE_URL}}/hi'
     forward_client_headers: true
     headers:
     - value: dummy
