@@ -1,0 +1,6 @@
+{
+  "hasura": {
+    "admin_secret": "sparring-hasura-secret",
+    "url": "http://localhost:8080/v1/graphql"
+  }
+}

@@ -12,10 +12,6 @@ run-firebase: ## Exec `firebase emulators:start`
 run-app: ## Run React App in local
 	cd app && yarn start
 
-.PHONY: run-auth-sample
-run-auth-sample: ## Run firebase auth frontend
-	php -S localhost:9000 -t frontend
-
 .PHONY: run-local-console
 run-local-console: ## Run hasura console in local environment
 	cd hasura && hasura console --envfile env/.local.env
