@@ -4,9 +4,13 @@
 run-backend: ## Run hasura-engine and database with docker-compose
 	docker-compose up
 
-.PHONY: run-auth
-run-auth: ## Run firebase auth frontend
-	cd auth_app && php -S localhost:9000 -t frontend
+.PHONY: run-firebase
+run-firebase: ## Exec `firebase emulators:start`
+	cd firebase && firebase emulators:start
+
+.PHONY: run-app
+run-app: ## Run React App in local
+	cd app && GOOGLE_APPLICATION_CREDENTIALS=firebase/sparring-hasura-service-account.json yarn start
 
 .PHONY: run-local-console
 run-local-console: ## Run hasura console in local environment
