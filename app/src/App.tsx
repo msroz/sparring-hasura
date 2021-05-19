@@ -56,7 +56,12 @@ console.log(process.env.REACT_APP_HASURA_GRAPHQL_ENDPOINT)
         <button onClick={fetchUsers} disabled={!idToken.length}>
           fetch
         </button>
+        { !!idToken.length && <div>
+            {idToken}
+          </div>
+        }
       </div>
+      <a href="https://jwt.io/" target="_blank" rel="noreferrer">jwt.io</a>
     </div>
   );
 }

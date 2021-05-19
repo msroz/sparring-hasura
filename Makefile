@@ -10,7 +10,7 @@ run-firebase: ## Exec `firebase emulators:start`
 
 .PHONY: run-app
 run-app: ## Run React App in local
-	cd app && yarn start
+	cd app && GOOGLE_APPLICATION_CREDENTIALS=firebase/sparring-hasura-service-account.json yarn start
 
 .PHONY: run-local-console
 run-local-console: ## Run hasura console in local environment
