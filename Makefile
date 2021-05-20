@@ -1,4 +1,5 @@
 .DEFAULT_GOAL := help
+MAKEFILE_DIR := $(dir $(realpath $(firstword $(MAKEFILE_LIST))))
 
 .PHONY: run-backend
 run-backend: ## Run hasura-engine and database with docker-compose
@@ -6,11 +7,11 @@ run-backend: ## Run hasura-engine and database with docker-compose
 
 .PHONY: run-firebase
 run-firebase: ## Exec `firebase emulators:start`
-	cd firebase && firebase emulators:start
+	cd firebase && GOOGLE_APPLICATION_CREDENTIALS=$(MAKEFILE_DIR)/firebase/sparring-hasura-service-account.json firebase emulators:start
 
 .PHONY: run-app
 run-app: ## Run React App in local
-	cd app && GOOGLE_APPLICATION_CREDENTIALS=firebase/sparring-hasura-service-account.json yarn start
+	cd app && yarn start
 
 .PHONY: run-local-console
 run-local-console: ## Run hasura console in local environment
