@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import firebase from './firebaseConfig'
+import jwt from 'jsonwebtoken'
 
 function App() {
   const [idToken, setIdToken] = useState<string>('')
@@ -15,6 +16,16 @@ function App() {
     firebase.auth().signOut()
   }
 
+  // XXX: Too hacky
+  // See: https://github.com/hasura/graphql-engine/issues/6338#issuecomment-762556202
+  const getLocallySignedToken = token => {
+    return jwt.sign(jwt.decode(token), "secret_secret_secret_secret_secret")
+  }
+
+  const isLocalEnvironment = () => {
+    return window.location.hostname === "localhost"
+  }
+
   firebase.auth().onAuthStateChanged(user => {
     if (user) {
       user.getIdToken().then(token => {
@@ -24,14 +35,15 @@ function App() {
     }
   })
 
-console.log(process.env.REACT_APP_HASURA_GRAPHQL_ENDPOINT)
   const fetchUsers = () => {
     console.log(idToken)
     fetch(process.env.REACT_APP_HASURA_GRAPHQL_ENDPOINT, {
       method: 'POST',
       body: JSON.stringify(query),
       headers: {
-        Authorization: `Bearer ${idToken}`
+        Authorization: `Bearer ${
+          isLocalEnvironment() ? getLocallySignedToken(idToken) : idToken
+        }`
       }
     }).then(response => {
       response.json().then(result => {
@@ -57,7 +69,7 @@ console.log(process.env.REACT_APP_HASURA_GRAPHQL_ENDPOINT)
           fetch
         </button>
         { !!idToken.length && <div>
-            {idToken}
+            {getLocallySignedToken(idToken)}
           </div>
         }
       </div>

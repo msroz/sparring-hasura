@@ -22,7 +22,9 @@ services:
       HASURA_GRAPHQL_DEV_MODE: "true"
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       HASURA_GRAPHQL_ADMIN_SECRET: sparring-hasura-secret
-      HASURA_GRAPHQL_JWT_SECRET: '{"type":"RS256","jwk_url": "https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com", "audience": "sparring-hasura", "issuer": "https://securetoken.google.com/sparring-hasura"}'
+      ##  HASURA_GRAPHQL_JWT_SECRET: '{"type":"RS256","jwk_url": "https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com", "audience": "sparring-hasura", "issuer": "https://securetoken.google.com/sparring-hasura"}'
+      # XXX: https://github.com/hasura/graphql-engine/issues/6338#issuecomment-762556202
+      HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256","key": "secret_secret_secret_secret_secret", "audience": "sparring-hasura", "issuer": "https://securetoken.google.com/sparring-hasura"}'
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
       EVENT_WEBHOOK_URL: http://host.docker.internal:3000/createTodo
       ACTION_BASE_URL: http://host.docker.internal:3000
