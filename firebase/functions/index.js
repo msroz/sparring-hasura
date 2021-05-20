@@ -19,7 +19,7 @@ const HASURA_GRAPHQL_ADMIN_SECRET = functions.config().hasura.admin_secret
 
 // On sign up.
 exports.processSignUp = functions.auth.user().onCreate(user => {
-  console.dir(`id:${user.uid} name:${user.name} email:${user.email}`)
+  console.log(`id:${user.uid} name:${user.displayName} email:${user.email}`)
 
   const customClaims = {
     "https://hasura.io/jwt/claims": {
@@ -37,7 +37,7 @@ exports.processSignUp = functions.auth.user().onCreate(user => {
         query: createUser,
         variables: {
           id: user.uid,
-          name: user.name,
+          name: user.displayName,
           email: user.email,
         },
       }
