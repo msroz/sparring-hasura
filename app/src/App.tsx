@@ -23,11 +23,41 @@ if (!firebase.apps.length) {
 const auth = firebase.auth();
 auth.useEmulator("http://localhost:9099");
 
+interface User {
+  id: string,
+  name: string,
+  email: string,
+}
+interface Todo {
+  id: string,
+  title: string,
+  user: User,
+}
+
 function App() {
   const [idToken, setIdToken] = useState<string>('')
   const [userId, setUserId] = useState<string>('')
+  const [decodedJwtString, setDecodedJwtString] = useState<string>('')
+  const [todos, setTodos] = useState<Todo[]>([])
 
-  const queryString = "query { users { id name email } }"
+  const queryString = `
+query  {
+  todos {
+    id
+    title
+    user {
+      id
+      name
+      email
+    }
+  }
+  users {
+    id
+    name
+    email
+  }
+}
+  `
   const query = { query: queryString }
 
   const login = () => {
@@ -84,6 +114,7 @@ function App() {
             setIdToken(token)
           })
         }
+        setDecodedJwtString(JSON.stringify(jwt.decode(token), null, 2))
       } else {
         // out
       }
@@ -91,7 +122,6 @@ function App() {
   }, [])
 
   const fetchUsers = () => {
-    console.log(idToken)
     fetch(process.env.REACT_APP_HASURA_GRAPHQL_ENDPOINT, {
       method: 'POST',
       body: JSON.stringify(query),
@@ -103,6 +133,8 @@ function App() {
     }).then(response => {
       response.json().then(result => {
         console.dir(result)
+        const todos = result.data.todos
+        setTodos(todos)
       })
     })
   }
@@ -128,9 +160,16 @@ function App() {
         <button onClick={fetchUsers} disabled={!idToken.length}>
           fetch
         </button>
-        { !!idToken.length && <div>
-            {getLocallySignedToken(idToken)}
+        { !!idToken.length && (
+          <div>
+            <div>
+              {getLocallySignedToken(idToken)}
+            </div>
+            <pre>
+              {decodedJwtString}
+            </pre>
           </div>
+          )
         }
         { !!userId.length && <div>
             userId: {userId}
@@ -138,6 +177,18 @@ function App() {
         }
       </div>
       <a href="https://jwt.io/" target="_blank" rel="noreferrer">jwt.io</a>
+
+      <ul>
+        {
+          todos.map(todo => (
+            <ul key={todo.id}>
+              ID:{todo.id} Titile:{todo.title}
+                by {todo.user.name}
+                (UserId:{todo.user.id} Email:{todo.user.email})
+            </ul>
+          ))
+        }
+      </ul>
     </div>
   );
 }
