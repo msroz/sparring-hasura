@@ -26,8 +26,8 @@ services:
       # XXX: https://github.com/hasura/graphql-engine/issues/6338#issuecomment-762556202
       HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256","key": "secret_secret_secret_secret_secret", "audience": "sparring-hasura", "issuer": "https://securetoken.google.com/sparring-hasura"}'
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
-      EVENT_WEBHOOK_URL: http://host.docker.internal:3000/createTodo
-      ACTION_BASE_URL: http://host.docker.internal:3000
+      EVENT_WEBHOOK_URL: http://host.docker.internal:9876/events/createTodo
+      ACTION_BASE_URL: http://host.docker.internal:9876
 volumes:
   db_data:
 

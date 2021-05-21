@@ -71,7 +71,7 @@
   event_triggers:
   - name: createTodo
     definition:
-      enable_manual: false
+      enable_manual: true
       insert:
         columns: '*'
     retry_conf:

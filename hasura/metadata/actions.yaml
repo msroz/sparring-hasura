@@ -1,20 +1,26 @@
 actions:
-- name: hello
+- name: mutationSample
   definition:
     kind: synchronous
-    handler: '{{ACTION_BASE_URL}}//hello'
+    handler: '{{ACTION_BASE_URL}}/actions/mutationSample'
     forward_client_headers: true
-- name: hi
+- name: querySample
   definition:
     kind: ""
-    handler: '{{ACTION_BASE_URL}}/hi'
+    handler: '{{ACTION_BASE_URL}}/actions/querySample'
     forward_client_headers: true
     headers:
     - value: dummy
       name: ACTION_SECRET_DUMMY
+- name: registerUser
+  definition:
+    kind: synchronous
+    handler: '{{ACTION_BASE_URL}}/actions/registerUser'
 custom_types:
   enums: []
-  input_objects: []
+  input_objects:
+  - name: SampleInput
   objects:
   - name: World
+  - name: SampleOutput
   scalars: []
