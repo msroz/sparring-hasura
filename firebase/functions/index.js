@@ -4,28 +4,53 @@ const axios = require("axios");
 
 admin.initializeApp(functions.config().firebase);
 
-const createUser = `
-mutation createUser($id: String = "", $name: String = "", $email: String = "") {
-  insert_users_one(object: { id: $id, name: $name, email: $email }, on_conflict: {constraint: users_pkey, update_columns: []}) {
-    id
-    email
-    name
+const MutationRegisterUser = `
+  mutation RegisterUser($email: String!, $uid: String!) {
+    registerUser(uid: $uid, email: $email) {
+      user_id
+    }
   }
-}
 `
 
 const HASURA_GRAPHQL_ENDPOINT = functions.config().hasura.url
 const HASURA_GRAPHQL_ADMIN_SECRET = functions.config().hasura.admin_secret
 
 // On sign up.
-exports.processSignUp = functions.auth.user().onCreate(user => {
+exports.processSignUp = functions.auth.user().onCreate(async user => {
   console.log(`id:${user.uid} name:${user.displayName} email:${user.email}`)
+
+
+  let query = {
+    query: MutationRegisterUser,
+    variables: {
+      uid: user.uid,
+      email: user.email,
+    },
+  }
+  response = await axios({
+    method: 'post',
+    url: HASURA_GRAPHQL_ENDPOINT,
+    data: query,
+    headers: {
+      'x-hasura-admin-secret': HASURA_GRAPHQL_ADMIN_SECRET,
+    },
+  })
+
+  console.log(response.data)
+  // { errors: [ { extensions: [Object], message: 'internal error' } ] }
+  // { data: { registerUser: { user_id: '01F6RW0AH0PJ4EXQH1CNP16PRM' } } }
+
+  const body = response.data
+  if (body.errors) {
+    // TODO: error
+  }
+  hasuraUserId = body.data.registerUser.user_id
 
   const customClaims = {
     "https://hasura.io/jwt/claims": {
       "x-hasura-default-role": "user",
       "x-hasura-allowed-roles": ["user"],
-      "x-hasura-user-id": user.uid
+      "x-hasura-user-id": hasuraUserId,
     }
   };
 
@@ -33,22 +58,6 @@ exports.processSignUp = functions.auth.user().onCreate(user => {
     .auth()
     .setCustomUserClaims(user.uid, customClaims)
     .then(() => {
-      let query = {
-        query: createUser,
-        variables: {
-          id: user.uid,
-          name: user.displayName,
-          email: user.email,
-        },
-      }
-      axios({
-        method: 'post',
-        url: HASURA_GRAPHQL_ENDPOINT,
-        data: query,
-        headers: {
-          'x-hasura-admin-secret': HASURA_GRAPHQL_ADMIN_SECRET,
-        },
-      })
 
       // Update real-time database to notify client to force refresh.
       const metadataRef = admin.database().ref("metadata/" + user.uid);

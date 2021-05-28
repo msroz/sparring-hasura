@@ -17,10 +17,12 @@ require (
 	github.com/klauspost/asmfmt v1.3.0 // indirect
 	github.com/koron/iferr v0.0.0-20180615142939-bb332a3b1d91 // indirect
 	github.com/labstack/echo/v4 v4.3.0 // indirect
+	github.com/machinebox/graphql v0.2.2 // indirect
 	github.com/mdempsky/gocode v0.0.0-20200405233807-4acdcbdea79d // indirect
 	github.com/nicksnyder/go-i18n v1.10.1 // indirect
 	github.com/oklog/ulid v1.3.1 // indirect
 	github.com/pelletier/go-toml v1.9.1 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rogpeppe/godef v1.1.2 // indirect
 	github.com/stamblerre/gocode v1.0.0 // indirect
 	github.com/zmb3/gogetdoc v0.0.0-20190228002656-b37376c5da6a // indirect
