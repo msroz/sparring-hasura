@@ -111,7 +111,7 @@ type RespInvitations struct {
 }
 
 func getTeamInvitations(email string) (*RespInvitations, error) {
-	client := graphql.NewClient("http://localhost:8080/v1/graphql")
+	client := graphql.NewClient("http://host.docker.internal:8080/v1/graphql")
 	req := graphql.NewRequest(`
 		query InvitationsByEmail($email: String!) {
 			team_invitations(where: {invitee_email: {_eq: $email}}) {
@@ -148,7 +148,7 @@ type RespCreateUser struct {
 }
 
 func createUser(id ulid.ULID, email string, authId string) (*RespCreateUser, error) {
-	client := graphql.NewClient("http://localhost:8080/v1/graphql")
+	client := graphql.NewClient("http://host.docker.internal:8080/v1/graphql")
 	req := graphql.NewRequest(`
 		mutation CreateUser ($id: String, $email: String!, $auth_id: String!) {
 			insert_users_one(object: {id: $id, email: $email, auth_id: $auth_id}) {
@@ -188,7 +188,7 @@ type RespCreateTeamMembers struct {
 }
 
 func createTeamMembers(objects []InputTeamMember) (*RespCreateTeamMembers, error) {
-	client := graphql.NewClient("http://localhost:8080/v1/graphql")
+	client := graphql.NewClient("http://host.docker.internal:8080/v1/graphql")
 	req := graphql.NewRequest(`
 		mutation CreateTeamMembers($objects: [team_members_insert_input!]!) {
 			insert_team_members(objects: $objects) {

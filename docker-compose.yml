@@ -8,6 +8,8 @@ services:
       - db_data:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: postgrespassword
+    networks:
+      - app-net
   graphql-engine:
     image: hasura/graphql-engine:v1.3.3
     container_name: hasura-engine
@@ -30,6 +32,8 @@ services:
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
       EVENT_WEBHOOK_URL: http://host.docker.internal:9876/events/createTodo
       ACTION_BASE_URL: http://host.docker.internal:9876
+    networks:
+      - app-net
   actions:
     container_name: hasura-actions
     build:
@@ -40,6 +44,10 @@ services:
       - "9876:9876"
     volumes:
       - ./actions:/app/go/base
+    networks:
+      - app-net
+networks:
+  app-net:
 volumes:
   db_data:
     driver: local
