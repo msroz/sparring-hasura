@@ -1,3 +1,5 @@
 hasura/env/.*.env
 
 firebase/sparring-hasura-service-account.json
+
+actions/tmp/

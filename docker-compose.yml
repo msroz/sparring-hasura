@@ -2,17 +2,21 @@ version: '3.6'
 services:
   postgres:
     image: postgres:12
+    container_name: db
     restart: always
     volumes:
-    - db_data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: postgrespassword
+    networks:
+      - app-net
   graphql-engine:
     image: hasura/graphql-engine:v1.3.3
+    container_name: hasura-engine
     ports:
-    - "8080:8080"
+      - "8080:8080"
     depends_on:
-    - "postgres"
+      - "postgres"
     restart: always
     environment:
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
@@ -26,8 +30,25 @@ services:
       # XXX: https://github.com/hasura/graphql-engine/issues/6338#issuecomment-762556202
       HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256","key": "secret_secret_secret_secret_secret", "audience": "sparring-hasura", "issuer": "https://securetoken.google.com/sparring-hasura"}'
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
-      EVENT_WEBHOOK_URL: http://host.docker.internal:3000/createTodo
-      ACTION_BASE_URL: http://host.docker.internal:3000
+      EVENT_WEBHOOK_URL: http://host.docker.internal:9876/events/createTodo
+      ACTION_BASE_URL: http://host.docker.internal:9876
+    networks:
+      - app-net
+  actions:
+    container_name: hasura-actions
+    build:
+      context: "./actions"
+      target: base
+    command: "air -c .air.toml"
+    ports:
+      - "9876:9876"
+    volumes:
+      - ./actions:/app/go/base
+    networks:
+      - app-net
+networks:
+  app-net:
 volumes:
   db_data:
+    driver: local
 

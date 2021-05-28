@@ -12,6 +12,15 @@
           id: id
 - table:
     schema: public
+    name: team_invitations
+- table:
+    schema: public
+    name: team_members
+- table:
+    schema: public
+    name: teams
+- table:
+    schema: public
     name: todos
   object_relationships:
   - name: user
@@ -62,7 +71,7 @@
   event_triggers:
   - name: createTodo
     definition:
-      enable_manual: false
+      enable_manual: true
       insert:
         columns: '*'
     retry_conf:
@@ -80,7 +89,6 @@
       - created_at
       - email
       - id
-      - name
       filter:
         id:
           _eq: X-Hasura-User-Id

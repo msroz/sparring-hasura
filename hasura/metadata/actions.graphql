@@ -1,20 +1,35 @@
 type Mutation {
-  hello (
+  mutationSample (
     message: String!
   ): World
 }
 
 
 type Query {
-  hi : World
+  querySample : World
+}
+
+
+type Mutation {
+  registerUser (
+    email: String!
+    uid: String!
+  ): SampleOutput
 }
 
 
 
 
+input SampleInput {
+  email : String!
+  uid : String!
+}
+
 type World {
   hello : String!
-  userAgent : String!
-  message : String!
+}
+
+type SampleOutput {
+  user_id : String!
 }
 

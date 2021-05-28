@@ -6,12 +6,17 @@ Play with [Hasura](https://hasura.io/) 😈
 
 1. [Install the Hasura CLI](https://hasura.io/docs/latest/graphql/core/hasura-cli/install-hasura-cli.html#install-hasura-cli)
 
-```
-# run hasura-engine
+```console
+# run hasura graphql-engine + hasura-actions(Go) + DB
 $ make run-backend
 
-# run hasura consle (on another shell)
-$ make run-console
+# (on another shell)
+# run hasura consle
+$ make run-local-console
+
+# (on other shell)
+# run frontend ap
+$ make run-app
 ```
 
 ## Using Hasura CLI
