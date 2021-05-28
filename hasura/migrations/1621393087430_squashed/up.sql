@@ -14,7 +14,8 @@ CREATE TABLE "public"."team_members"(
   "name" text NOT NULL,
   "created_at" timestamptz NOT NULL DEFAULT now(),
   "updated_at" timestamptz NOT NULL DEFAULT now(),
-  PRIMARY KEY ("id")
+  PRIMARY KEY ("id"),
+  UNIQUE ("team_id", "user_id")
 );
 
 CREATE TABLE "public"."team_invitations"(
@@ -35,8 +36,11 @@ CREATE TABLE "public"."users"(
   "auth_id" text NOT NULL,
   "email" text NOT NULL,
   "created_at" timestamptz NOT NULL DEFAULT now(),
+  "updated_at" timestamptz NOT NULL DEFAULT now(),
   "last_seen" timestamptz,
-  PRIMARY KEY ("id")
+  PRIMARY KEY ("id"),
+  UNIQUE ("auth_id"),
+  UNIQUE ("email")
 );
 
 CREATE TABLE "public"."todos"(
@@ -47,6 +51,7 @@ CREATE TABLE "public"."todos"(
   "is_completed" boolean NOT NULL DEFAULT false,
   "is_public" boolean NOT NULL DEFAULT false,
   "created_at" timestamptz NOT NULL DEFAULT now(),
+  "updated_at" timestamptz NOT NULL DEFAULT now(),
   PRIMARY KEY ("id")
 );
 
