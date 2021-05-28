@@ -2,17 +2,19 @@ version: '3.6'
 services:
   postgres:
     image: postgres:12
+    container_name: db
     restart: always
     volumes:
-    - db_data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: postgrespassword
   graphql-engine:
     image: hasura/graphql-engine:v1.3.3
+    container_name: hasura-engine
     ports:
-    - "8080:8080"
+      - "8080:8080"
     depends_on:
-    - "postgres"
+      - "postgres"
     restart: always
     environment:
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
@@ -28,6 +30,17 @@ services:
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
       EVENT_WEBHOOK_URL: http://host.docker.internal:9876/events/createTodo
       ACTION_BASE_URL: http://host.docker.internal:9876
+  actions:
+    container_name: hasura-actions
+    build:
+      context: "./actions"
+      target: base
+    command: "air -c .air.toml"
+    ports:
+      - "9876:9876"
+    volumes:
+      - ./actions:/app/go/base
 volumes:
   db_data:
+    driver: local
 

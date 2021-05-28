@@ -1,20 +1,29 @@
-FROM golang:1.16-alpine3.13 as builder
-WORKDIR /go/src
+FROM golang:1.16-alpine3.13 as base
+
+WORKDIR /app/go/base
+
+COPY go.mod .
+COPY go.sum . 
+
+RUN go mod download
+RUN go get -u github.com/cosmtrek/air
+
 COPY . .
 
-RUN apk update && \
-      apk add --no-cache git && \
-      go build -o app && \
-      GO111MODULE=off go get github.com/oxequa/realize
+FROM golang:1.16-alpine3.13 as builder
+
+WORKDIR /app/go/builder
+
+COPY --from=base /app/go/src /app/go/builder
+RUN CGO_ENABLED=0 go build main.go
 
 FROM scratch as runner
 
-WORKDIR /app
+WORKDIR /app/go/src
 
-COPY --from=builder /go/src/app .
+RUN apk add --no-cache
+COPY --from=builder /app/go/builder/main /app/go/src/main
 
-RUN addgroup go \
-    && adduser -D -G go go \
-    && chown -R go:go /app/app
+EXPOSE 9876
 
-CMD ["./app"]
+CMD ["/app/go/src/main"]
