@@ -26,6 +26,7 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rogpeppe/godef v1.1.2 // indirect
 	github.com/stamblerre/gocode v1.0.0 // indirect
+	github.com/vektah/gqlparser/v2 v2.1.0 // indirect
 	github.com/zmb3/gogetdoc v0.0.0-20190228002656-b37376c5da6a // indirect
 	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616 // indirect
 	golang.org/x/sys v0.0.0-20210521090106-6ca3eb03dfc2 // indirect
