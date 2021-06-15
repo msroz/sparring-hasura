@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	9fans.net/go v0.0.4 // indirect
+	github.com/99designs/gqlgen v0.13.0 // indirect
 	github.com/alecthomas/gometalinter v3.0.0+incompatible // indirect
 	github.com/alecthomas/units v0.0.0-20210208195552-ff826a37aa15 // indirect
 	github.com/davidrjenni/reftools v0.0.0-20210213085015-40322ffdc2e4 // indirect
