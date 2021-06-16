@@ -43,6 +43,8 @@ func Init() *echo.Echo {
 			generated.Config{Resolvers: &graph.Resolver{}},
 		),
 	)
+	// See: https://gqlgen.com/reference/complexity/
+	// graphqlHandler.Use(extension.FixedComplexityLimit(10))
 	e.POST("/query", func(c echo.Context) error {
 		graphqlHandler.ServeHTTP(c.Response(), c.Request())
 		return nil
