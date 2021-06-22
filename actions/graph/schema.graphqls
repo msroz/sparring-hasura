@@ -2,7 +2,7 @@
 #
 # https://gqlgen.com/getting-started/
 
-type Todo {
+type Task {
   id: ID!
   text: String!
   done: Boolean!
@@ -15,17 +15,17 @@ type User {
 }
 
 type Query {
-  todos: [Todo!]!
+  tasks: [Task!]!
   user: User
 }
 
-input NewTodo {
+input NewTask {
   text: String!
   userId: String!
 }
 
 type Mutation {
-  createTodo(input: NewTodo!): Todo!
+  createTask(input: NewTask!): Task!
   singleUpload(file: Upload): File!
 }
 

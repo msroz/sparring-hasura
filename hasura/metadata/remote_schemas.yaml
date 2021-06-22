@@ -1,1 +1,4 @@
-[]
+- name: gqlgen
+  definition:
+    url: http://host.docker.internal:9876/query
+    timeout_seconds: 60

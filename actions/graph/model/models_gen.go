@@ -9,7 +9,7 @@ type File struct {
 	ContentType string `json:"contentType"`
 }
 
-type NewTodo struct {
+type NewTask struct {
 	Text   string `json:"text"`
 	UserID string `json:"userId"`
 }
