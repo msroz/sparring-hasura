@@ -4,7 +4,9 @@ import (
 	"net/http"
 
 	gqlHandler "github.com/99designs/gqlgen/graphql/handler"
+	"github.com/99designs/gqlgen/graphql/handler/transport"
 	"github.com/99designs/gqlgen/graphql/playground"
+
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
@@ -38,15 +40,24 @@ func Init() *echo.Echo {
 	}
 
 	/* GraphQL Server with gqlgen */
-	graphqlHandler := gqlHandler.NewDefaultServer(
+	srv := gqlHandler.NewDefaultServer(
 		generated.NewExecutableSchema(
 			generated.Config{Resolvers: &graph.Resolver{}},
 		),
 	)
+	srv.AddTransport(transport.POST{})
+
+	// https://github.com/99designs/gqlgen/blob/master/example/fileupload/server/server.go
+	var mb int64 = 1 << 20
+	srv.AddTransport(transport.MultipartForm{
+		MaxMemory:     32 * mb,
+		MaxUploadSize: 50 * mb,
+	})
+
 	// See: https://gqlgen.com/reference/complexity/
 	// graphqlHandler.Use(extension.FixedComplexityLimit(10))
 	e.POST("/query", func(c echo.Context) error {
-		graphqlHandler.ServeHTTP(c.Response(), c.Request())
+		srv.ServeHTTP(c.Response(), c.Request())
 		return nil
 	})
 	playgroundHandler := playground.Handler("GraphQL", "/query")

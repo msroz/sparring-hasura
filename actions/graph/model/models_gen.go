@@ -2,6 +2,13 @@
 
 package model
 
+type File struct {
+	ID          int    `json:"id"`
+	Name        string `json:"name"`
+	Content     string `json:"content"`
+	ContentType string `json:"contentType"`
+}
+
 type NewTodo struct {
 	Text   string `json:"text"`
 	UserID string `json:"userId"`
