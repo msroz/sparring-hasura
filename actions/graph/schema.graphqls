@@ -1,0 +1,40 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+type Task {
+  id: ID!
+  text: String!
+  done: Boolean!
+  user: User!
+}
+
+type User {
+  id: ID!
+  name: String!
+}
+
+type Query {
+  tasks: [Task!]!
+  user: User
+}
+
+input NewTask {
+  text: String!
+  userId: String!
+}
+
+type Mutation {
+  createTask(input: NewTask!): Task!
+  singleUpload(file: Upload): File!
+}
+
+scalar Upload
+
+type File {
+  id: Int!
+  name: String!
+  content: String!
+  contentType: String!
+}
+

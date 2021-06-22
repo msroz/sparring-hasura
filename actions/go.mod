@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	9fans.net/go v0.0.4 // indirect
+	github.com/99designs/gqlgen v0.13.0 // indirect
 	github.com/alecthomas/gometalinter v3.0.0+incompatible // indirect
 	github.com/alecthomas/units v0.0.0-20210208195552-ff826a37aa15 // indirect
 	github.com/davidrjenni/reftools v0.0.0-20210213085015-40322ffdc2e4 // indirect
@@ -25,6 +26,7 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rogpeppe/godef v1.1.2 // indirect
 	github.com/stamblerre/gocode v1.0.0 // indirect
+	github.com/vektah/gqlparser/v2 v2.1.0 // indirect
 	github.com/zmb3/gogetdoc v0.0.0-20190228002656-b37376c5da6a // indirect
 	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616 // indirect
 	golang.org/x/sys v0.0.0-20210521090106-6ca3eb03dfc2 // indirect
